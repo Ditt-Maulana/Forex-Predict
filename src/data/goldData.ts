@@ -71,7 +71,157 @@ export interface AnalysisPayload {
   };
 }
 
-export const DEFAULT_ANALYSIS_DATA: Record<'H1' | 'H4' | 'Daily', AnalysisPayload> = {
+export type AnalysisTimeframe = 'M1' | 'M5' | 'H1' | 'H4' | 'Daily';
+
+export const DEFAULT_ANALYSIS_DATA: Record<AnalysisTimeframe, AnalysisPayload> = {
+  M1: {
+    kondisiPasar: {
+      hargaTerkini: "$2,684.50",
+      trendUtama: "Bullish",
+      strukturPasar: "Micro-Scalp Bullish Order Flow. Terbentuk micro Higher High di $2,685.20 dan Higher Low di $2,683.80. Algorithmic micro-pullback menuju 1-minute Fair Value Gap (FVG) di $2,684.10 berhasil diserap oleh buyer.",
+      ringkasanKondisi: "Timeframe M1 digerakkan oleh eksekusi ultra-cepat algo/HFT. Momentum dorongan buyer mendominasi tape pembacaan order book dengan spread ketat 0.30 poin."
+    },
+    analisisTeknikal: {
+      supportUtama: [
+        "S1: $2,683.80 (Micro Swing Low M1)",
+        "S2: $2,682.20 (EMA 50 M1 Dynamic Support)",
+        "S3: $2,680.50 (EMA 200 M1 Base Floor)"
+      ],
+      resistanceUtama: [
+        "R1: $2,685.80 (Micro High Sesi)",
+        "R2: $2,687.20 (Liquidity Sweep Pool)",
+        "R3: $2,689.40 (Puncak Sesi 24H)"
+      ],
+      levelPsikologis: [
+        "$2,680.00 (Floor Intraday)",
+        "$2,685.00 (Mid-level Magnet)",
+        "$2,690.00 (Ceiling Psikologis)"
+      ],
+      ema50_200: "EMA 50 M1 ($2,683.20) berada di atas EMA 200 M1 ($2,681.40). Sudut kemiringan rata-rata bergerak mengindikasikan tekanan beli mikro yang agresif pada candle 1-menit.",
+      rsi: {
+        nilai: 63.8,
+        kondisi: "Bullish Micro Momentum",
+        catatan: "RSI 14 pada M1 memantul dari level 50, menunjukkan kelanjutan tren mikro tanpa overbought ekstrem."
+      },
+      macd: {
+        status: "Micro Bullish Expansion",
+        histogram: "+0.52 (Positif mikro)",
+        catatan: "Histogram hijau bertumbuh pada candle 1-menit, menandakan tekanan beli spontan."
+      },
+      bollingerBands: "Harga merayap di upper band M1 ($2,685.10) dengan bandwidth stabil pasca pelebaran mikro.",
+      chartPattern: "Micro Bull Flag pada grafik 1-menit dengan wick rejection di batas bawah.",
+      fibonacci: "Retracement micro wave 61.8% berada tepat di $2,684.00 dan direspons pantulan instan.",
+      volumeMomentum: "Lonjakan volume tick pada candle hijau M1 menandakan partisipasi eksekusi ritel dan algo scalper."
+    },
+    analisisFundamental: {
+      dxyPengaruh: "DXY bergerak flat di level 102.85 pada interval menit, memberi ruang stabil bagi pasangan XAU/USD untuk bergerak berbasis teknikal murni.",
+      yield10YTreasury: "Yield 10Y stabil di 4.08%, tanpa lonjakan volatilitas suku bunga dalam jangka menit.",
+      kebijakanFedFOMC: "Tidak ada jadwal pidato pejabat The Fed dalam interval menit saat ini, pasar digerakkan oleh likuiditas reguler.",
+      dataEkonomiRilis: "Kondisi kalender ekonomi aman dari rilis data merah (high-impact) dalam 30 menit ke depan.",
+      geopolitikSafeHaven: "Bid buying pasif tetap mendasari harga spot fisik di pasar London.",
+      sentimenEmasFisikBankSentral: "Aliran dana ETF emas harian memberikan stabilitas harga dasar."
+    },
+    prediksiSetupTrading: {
+      biasUtama: "Bullish",
+      skenarioPalingMungkin: "Scalp buy on dip saat harga menyentuh micro FVG $2,683.90 - $2,684.40 dengan target cepat ke $2,686.80.",
+      entryZone: "$2,684.00 - $2,684.50 (Scalp Entry)",
+      takeProfit1: "$2,686.80 (+23 pips)",
+      takeProfit2: "$2,688.50 (+40 pips)",
+      stopLoss: "$2,682.30",
+      riskRewardRatio: "1 : 2.1",
+      invalidationLevel: "$2,681.50 (Penembusan ke bawah level ini membatalkan setup scalp M1)",
+      alasanSetup: "Konfluensi pantulan EMA 50 M1 + pengisian micro imbalance 1-menit."
+    },
+    manajemenRisiko: {
+      persentaseRisiko: "0.25% - 0.5% per eksekusi scalp M1.",
+      kondisiRisikoTinggi: [
+        "Menjelang detik-detik pergantian jam atau rilis data kilat.",
+        "Spread mendadak melebar di atas 5 pips pada sesi likuiditas tipis."
+      ],
+      tingkatKeyakinan: "Medium",
+      catatanPenting: "Gunakan fixed stop-loss otomatis. Jangan biarkan posisi scalp M1 berubah menjadi posisi floating loss panjang."
+    },
+    logikaPergerakanHarga: {
+      rangkumanLogika: "Pada skala mikro 1-menit, pergerakan harga didorong oleh eksekusi order flow instan dan absorbsi likuiditas resting stop order di atas swing high lokal.",
+      faktorPendorongUtama: "Aliran order beli instan dari momentum trader dan likuidasi short sellers intraday.",
+      risikoPembalikan: "Eksekusi market sell besar tiba-tiba dari institusi yang melikuidasi posisi."
+    }
+  },
+
+  M5: {
+    kondisiPasar: {
+      hargaTerkini: "$2,684.50",
+      trendUtama: "Bullish",
+      strukturPasar: "5-Minute Market Structure Shift (MSS) bullish pasca sweep likuiditas sesi London di $2,681.00. Terjadi pembentukan imbalance FVG M5 di zona $2,682.50 - $2,683.50 yang menahan harga dengan kokoh.",
+      ringkasanKondisi: "Pergerakan 5-menit memperlihatkan akumulasi volume pembeli yang sehat. Struktur swing mikro menunjukkan formasi Higher Highs berturut-turut."
+    },
+    analisisTeknikal: {
+      supportUtama: [
+        "S1: $2,682.50 (FVG Bullish M5 & Base Demand)",
+        "S2: $2,679.00 (EMA 50 M5 & Session VWAP)",
+        "S3: $2,674.50 (EMA 200 M5 Dynamic Floor)"
+      ],
+      resistanceUtama: [
+        "R1: $2,688.00 (Resistance Sesi)",
+        "R2: $2,692.00 (Major Intraday High)",
+        "R3: $2,696.50 (Target Ekspansi M5)"
+      ],
+      levelPsikologis: [
+        "$2,675.00 (Lantai Konsolidasi)",
+        "$2,680.00 (Pivot Point)",
+        "$2,685.00 (Resistance Dinamis)",
+        "$2,690.00 (Batas Atas Intraday)"
+      ],
+      ema50_200: "EMA 50 M5 ($2,680.80) meluncur naik tajam di atas EMA 200 M5 ($2,676.20), membentuk Golden Cross M5 yang memvalidasi dorongan momentum.",
+      rsi: {
+        nilai: 59.4,
+        kondisi: "Healthy Bullish",
+        catatan: "RSI M5 berada di zona ekspansi sehat tanpa sinyal divergensi bearish."
+      },
+      macd: {
+        status: "Bullish Cross",
+        histogram: "+1.15",
+        catatan: "Kedua garis MACD M5 berada di atas garis nol dengan histogram positif."
+      },
+      bollingerBands: "Pita Bollinger M5 mengembang ke atas dengan candle menunggangi upper band di $2,686.20.",
+      chartPattern: "Ascending Channel mikro pada time frame 5-menit.",
+      fibonacci: "Golden Ratio 61.8% dari low hari ini bertumpu di $2,682.80.",
+      volumeMomentum: "Rata-rata volume tick pada candle 5-menit naik 40% di atas moving average volume."
+    },
+    analisisFundamental: {
+      dxyPengaruh: "DXY cenderung melemah perlahan di sesi London, memberikan angin segar bagi pembeli emas.",
+      yield10YTreasury: "Imbal hasil US 10Y flat di 4.08%, meredakan kekhawatiran kenaikan suku bunga kilat.",
+      kebijakanFedFOMC: "Pasar memfaktorkan penurunan suku bunga The Fed secara konsisten.",
+      dataEkonomiRilis: "Tidak ada ancaman berita kejutan dalam jendela 1 jam ke depan.",
+      geopolitikSafeHaven: "Premi risiko geopolitik menopang minat beli setiap kali harga koreksi.",
+      sentimenEmasFisikBankSentral: "Permintaan spot fisik Asia tetap mencatatkan premi."
+    },
+    prediksiSetupTrading: {
+      biasUtama: "Bullish",
+      skenarioPalingMungkin: "Re-test FVG M5 di $2,682.80 - $2,683.80 lalu akselerasi menembus $2,686.00 menuju target resistensi sesi $2,688.00.",
+      entryZone: "$2,682.80 - $2,684.00 (Buy on Retest)",
+      takeProfit1: "$2,688.00 (TP Konservatif M5)",
+      takeProfit2: "$2,692.50 (TP Ekstensi M5)",
+      stopLoss: "$2,679.50",
+      riskRewardRatio: "1 : 2.3",
+      invalidationLevel: "$2,678.00 (Penutupan candle M5 di bawah ini membatalkan setup)",
+      alasanSetup: "MSS konfirmasi bullish + pantulan dinamis EMA 50 grafik 5-menit."
+    },
+    manajemenRisiko: {
+      persentaseRisiko: "0.5% - 0.75% per trade scalping M5.",
+      kondisiRisikoTinggi: [
+        "15 menit menjelang berita US Initial Jobless Claims atau PMI.",
+        "Volume tick mendadak anjlok saat transisi makan siang London."
+      ],
+      tingkatKeyakinan: "High",
+      catatanPenting: "Kunci 50% profit pada TP1 $2,688.00 dan pasang trailing stop ke Break Even."
+    },
+    logikaPergerakanHarga: {
+      rangkumanLogika: "Grafik 5-menit menangkap rotasi likuiditas institusional intraday, di mana pembeli menyerap penawaran jual di level support kunci.",
+      faktorPendorongUtama: "Penyerapan likuiditas jual oleh smart money trader sesi London/New York.",
+      risikoPembalikan: "Pelemahan momentum jika harga tertolak keras dengan candle engulfing di $2,688.00."
+    }
+  },
   H4: {
     kondisiPasar: {
       hargaTerkini: "$2,684.50",
@@ -308,7 +458,7 @@ export const INTERMARKET_LIVE_DATA = {
   goldSilverRatio: { value: 84.28, status: 'Normalizing' }
 };
 
-export type ChartInterval = '15m' | '1H' | '4H' | 'Daily';
+export type ChartInterval = '1m' | '5m' | '15m' | '1H' | '4H' | 'Daily';
 
 // Generate realistic candlestick sample points for visualization across different intervals
 export function generateCandlestickSeries(interval: ChartInterval, count = 45): CandlestickData[] {
@@ -321,6 +471,16 @@ export function generateCandlestickSeries(interval: ChartInterval, count = 45): 
   let volatility: number;
 
   switch (interval) {
+    case '1m':
+      stepMinutes = 1;
+      basePrice = 2682.5;
+      volatility = 0.9;
+      break;
+    case '5m':
+      stepMinutes = 5;
+      basePrice = 2679.5;
+      volatility = 1.8;
+      break;
     case '15m':
       stepMinutes = 15;
       basePrice = 2676.0;
@@ -352,6 +512,8 @@ export function generateCandlestickSeries(interval: ChartInterval, count = 45): 
       timeLabel = candleTime.toLocaleDateString('id-ID', { month: 'short', day: 'numeric' });
     } else if (interval === '4H') {
       timeLabel = `${candleTime.getDate()}/${candleTime.getMonth() + 1} ${candleTime.getHours().toString().padStart(2, '0')}:00`;
+    } else if (interval === '1m') {
+      timeLabel = candleTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     } else {
       timeLabel = candleTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
     }
@@ -364,7 +526,7 @@ export function generateCandlestickSeries(interval: ChartInterval, count = 45): 
 
     const open = Math.round((basePrice + macroTrend + wave + noise) * 10) / 10;
     const isBull = Math.random() > 0.44 || i > count - 3;
-    const bodySize = Math.max(0.6, Math.random() * (volatility * 0.38));
+    const bodySize = Math.max(0.4, Math.random() * (volatility * 0.38));
     const close = Math.round((isBull ? open + bodySize : open - bodySize) * 10) / 10;
 
     const wickUpper = Math.random() * (volatility * 0.22);
@@ -372,7 +534,7 @@ export function generateCandlestickSeries(interval: ChartInterval, count = 45): 
     const high = Math.round((Math.max(open, close) + wickUpper) * 10) / 10;
     const low = Math.round((Math.min(open, close) - wickLower) * 10) / 10;
 
-    const baseVol = interval === '15m' ? 1800 : interval === '1H' ? 4200 : interval === '4H' ? 9500 : 24000;
+    const baseVol = interval === '1m' ? 850 : interval === '5m' ? 1400 : interval === '15m' ? 2200 : interval === '1H' ? 4200 : interval === '4H' ? 9500 : 24000;
     const volume = Math.floor(baseVol + Math.random() * (baseVol * 0.8) + (isBull ? baseVol * 0.3 : 0));
 
     result.push({

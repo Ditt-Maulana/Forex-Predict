@@ -4,6 +4,8 @@ import {
   INTERMARKET_LIVE_DATA, 
   generateCandlestickSeries, 
   AnalysisPayload,
+  AnalysisTimeframe,
+  ChartInterval,
   CandlestickData
 } from './data/goldData';
 import { HeaderTicker } from './components/HeaderTicker';
@@ -31,8 +33,8 @@ import {
 } from 'lucide-react';
 
 export function TerminalContent() {
-  const [timeframe, setTimeframe] = useState<'H1' | 'H4' | 'Daily'>('H4');
-  const [allAnalyses, setAllAnalyses] = useState<Record<'H1' | 'H4' | 'Daily', AnalysisPayload>>(DEFAULT_ANALYSIS_DATA);
+  const [timeframe, setTimeframe] = useState<AnalysisTimeframe>('H4');
+  const [allAnalyses, setAllAnalyses] = useState<Record<AnalysisTimeframe, AnalysisPayload>>(DEFAULT_ANALYSIS_DATA);
   const [currentPrice, setCurrentPrice] = useState<number>(2684.50);
   const [activeTab, setActiveTab] = useState<'analysis' | 'chart' | 'scenarios' | 'fundamental'>('analysis');
 
@@ -53,7 +55,11 @@ export function TerminalContent() {
 
   // Generated candle data
   const candleSeries = useMemo(() => {
-    const intv = timeframe === 'H1' ? '1H' : timeframe === 'H4' ? '4H' : 'Daily';
+    const intv: ChartInterval = 
+      timeframe === 'M1' ? '1m' :
+      timeframe === 'M5' ? '5m' :
+      timeframe === 'H1' ? '1H' :
+      timeframe === 'H4' ? '4H' : 'Daily';
     return generateCandlestickSeries(intv, 45);
   }, [timeframe]);
 
@@ -73,7 +79,7 @@ export function TerminalContent() {
     setIsCalcModalOpen(true);
   };
 
-  const handleAiSuccess = (newPayload: AnalysisPayload, tf: 'H1' | 'H4' | 'Daily') => {
+  const handleAiSuccess = (newPayload: AnalysisPayload, tf: AnalysisTimeframe) => {
     setAllAnalyses(prev => ({ ...prev, [tf]: newPayload }));
     setTimeframe(tf);
   };
@@ -203,9 +209,17 @@ export function TerminalContent() {
               takeProfit2={currentAnalysis.prediksiSetupTrading.takeProfit2}
               stopLoss={currentAnalysis.prediksiSetupTrading.stopLoss}
               invalidationLevel={currentAnalysis.prediksiSetupTrading.invalidationLevel}
-              initialInterval={timeframe === 'H1' ? '1H' : timeframe === 'H4' ? '4H' : 'Daily'}
+              initialInterval={
+                timeframe === 'M1' ? '1m' :
+                timeframe === 'M5' ? '5m' :
+                timeframe === 'H1' ? '1H' :
+                timeframe === 'H4' ? '4H' : 'Daily'
+              }
               onIntervalChange={(intv) => {
-                if (intv === '1H') setTimeframe('H1');
+                if (intv === '1m') setTimeframe('M1');
+                else if (intv === '5m') setTimeframe('M5');
+                else if (intv === '15m') setTimeframe('M5');
+                else if (intv === '1H') setTimeframe('H1');
                 else if (intv === '4H') setTimeframe('H4');
                 else if (intv === 'Daily') setTimeframe('Daily');
               }}
@@ -231,9 +245,17 @@ export function TerminalContent() {
               takeProfit2={currentAnalysis.prediksiSetupTrading.takeProfit2}
               stopLoss={currentAnalysis.prediksiSetupTrading.stopLoss}
               invalidationLevel={currentAnalysis.prediksiSetupTrading.invalidationLevel}
-              initialInterval={timeframe === 'H1' ? '1H' : timeframe === 'H4' ? '4H' : 'Daily'}
+              initialInterval={
+                timeframe === 'M1' ? '1m' :
+                timeframe === 'M5' ? '5m' :
+                timeframe === 'H1' ? '1H' :
+                timeframe === 'H4' ? '4H' : 'Daily'
+              }
               onIntervalChange={(intv) => {
-                if (intv === '1H') setTimeframe('H1');
+                if (intv === '1m') setTimeframe('M1');
+                else if (intv === '5m') setTimeframe('M5');
+                else if (intv === '15m') setTimeframe('M5');
+                else if (intv === '1H') setTimeframe('H1');
                 else if (intv === '4H') setTimeframe('H4');
                 else if (intv === 'Daily') setTimeframe('Daily');
               }}

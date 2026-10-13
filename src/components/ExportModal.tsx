@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { X, Copy, Check, Printer, FileText, Share2 } from 'lucide-react';
-import { AnalysisPayload } from '../data/goldData';
+import { AnalysisPayload, AnalysisTimeframe } from '../data/goldData';
 
 interface ExportModalProps {
   isOpen: boolean;
   onClose: () => void;
   data: AnalysisPayload;
-  timeframe: 'H1' | 'H4' | 'Daily';
+  timeframe: AnalysisTimeframe;
 }
 
 export const ExportModal: React.FC<ExportModalProps> = ({

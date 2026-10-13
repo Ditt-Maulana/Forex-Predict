@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Layers, TrendingUp, TrendingDown, RefreshCw, AlertTriangle, CheckCircle, ArrowRight } from 'lucide-react';
+import { AnalysisTimeframe } from '../data/goldData';
 
 interface ScenarioSimulatorProps {
   currentPrice: number;
-  timeframe: 'H1' | 'H4' | 'Daily';
+  timeframe: AnalysisTimeframe;
   entryZone: string;
   tp1: string;
   tp2: string;

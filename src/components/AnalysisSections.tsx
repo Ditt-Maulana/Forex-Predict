@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { 
-  AnalysisPayload 
+  AnalysisPayload,
+  AnalysisTimeframe 
 } from '../data/goldData';
 import { 
   TrendingUp, 
@@ -29,7 +30,7 @@ import { saveAnalysisToFirestore } from '../firebase/dbService';
 
 interface AnalysisSectionsProps {
   data: AnalysisPayload;
-  timeframe: 'H1' | 'H4' | 'Daily';
+  timeframe: AnalysisTimeframe;
   onUseInCalculator: (entry: string, sl: string, tp1: string, tp2: string) => void;
   onRequireAuth?: () => void;
 }

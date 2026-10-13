@@ -12,12 +12,12 @@ import {
   LogOut,
   LogIn
 } from 'lucide-react';
-import { INTERMARKET_LIVE_DATA } from '../data/goldData';
+import { INTERMARKET_LIVE_DATA, AnalysisTimeframe } from '../data/goldData';
 import { useAuth } from '../firebase/AuthContext';
 
 interface HeaderTickerProps {
-  timeframe: 'H1' | 'H4' | 'Daily';
-  setTimeframe: (tf: 'H1' | 'H4' | 'Daily') => void;
+  timeframe: AnalysisTimeframe;
+  setTimeframe: (tf: AnalysisTimeframe) => void;
   currentPrice: number;
   bias: 'Bullish' | 'Bearish' | 'Neutral';
   onOpenAiModal: () => void;
@@ -137,19 +137,19 @@ export const HeaderTicker: React.FC<HeaderTickerProps> = ({
         </div>
 
         {/* Center: Timeframe Pills */}
-        <div className="flex items-center gap-1 bg-slate-900 border border-slate-800 rounded-lg p-1">
-          {(['H1', 'H4', 'Daily'] as const).map((tf) => (
+        <div className="flex items-center gap-1 bg-slate-900 border border-slate-800 rounded-lg p-1 flex-wrap">
+          {(['M1', 'M5', 'H1', 'H4', 'Daily'] as const).map((tf) => (
             <button
               key={tf}
               onClick={() => setTimeframe(tf)}
-              className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all flex items-center gap-1.5 ${
+              className={`px-2.5 py-1 rounded-md text-xs font-bold transition-all flex items-center gap-1 ${
                 timeframe === tf
                   ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/30'
                   : 'text-slate-400 hover:text-white hover:bg-slate-800'
               }`}
             >
               <Clock className="w-3 h-3" />
-              {tf === 'Daily' ? 'DAILY (D1)' : tf}
+              <span>{tf === 'Daily' ? 'DAILY' : tf}</span>
             </button>
           ))}
         </div>

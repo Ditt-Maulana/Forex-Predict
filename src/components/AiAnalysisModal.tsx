@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { X, Sparkles, RefreshCw, Send, CheckCircle2, AlertCircle } from 'lucide-react';
-import { AnalysisPayload } from '../data/goldData';
+import { X, Sparkles, RefreshCw, AlertCircle } from 'lucide-react';
+import { AnalysisPayload, AnalysisTimeframe } from '../data/goldData';
 
 interface AiAnalysisModalProps {
   isOpen: boolean;
   onClose: () => void;
-  activeTimeframe: 'H1' | 'H4' | 'Daily';
+  activeTimeframe: AnalysisTimeframe;
   currentPrice: number;
-  onSuccess: (newPayload: AnalysisPayload, tf: 'H1' | 'H4' | 'Daily') => void;
+  onSuccess: (newPayload: AnalysisPayload, tf: AnalysisTimeframe) => void;
 }
 
 export const AiAnalysisModal: React.FC<AiAnalysisModalProps> = ({
@@ -17,7 +17,7 @@ export const AiAnalysisModal: React.FC<AiAnalysisModalProps> = ({
   currentPrice,
   onSuccess,
 }) => {
-  const [timeframe, setTimeframe] = useState<'H1' | 'H4' | 'Daily'>(activeTimeframe);
+  const [timeframe, setTimeframe] = useState<AnalysisTimeframe>(activeTimeframe);
   const [priceInput, setPriceInput] = useState<string>(currentPrice.toFixed(2));
   const [dxyInput, setDxyInput] = useState<string>('102.85');
   const [us10yInput, setUs10yInput] = useState<string>('4.08%');
@@ -65,6 +65,7 @@ export const AiAnalysisModal: React.FC<AiAnalysisModalProps> = ({
 
   const presetQueries = [
     'Fokus pada konfirmasi breakout level resistensi psikologis $2,700.00',
+    'Analisis scalping M1/M5 pada pengisian micro FVG terdekat',
     'Analisis dampak rilis data inflasi US CPI & Core PCE terhadap XAU/USD',
     'Skenario reaksi harga jika DXY mengalami technical rebound ke 103.50',
     'Evaluasi potensi order block demand di zona $2,650 - $2,660',
@@ -117,19 +118,19 @@ export const AiAnalysisModal: React.FC<AiAnalysisModalProps> = ({
             <label className="text-xs font-semibold text-slate-300 block mb-1.5">
               Target Timeframe Analisis
             </label>
-            <div className="grid grid-cols-3 gap-2">
-              {(['H1', 'H4', 'Daily'] as const).map((tf) => (
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+              {(['M1', 'M5', 'H1', 'H4', 'Daily'] as const).map((tf) => (
                 <button
                   key={tf}
                   type="button"
                   onClick={() => setTimeframe(tf)}
-                  className={`py-2 px-3 rounded-lg text-xs font-bold transition-all border ${
+                  className={`py-2 px-2.5 rounded-lg text-xs font-bold transition-all border ${
                     timeframe === tf
                       ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-md shadow-amber-500/20'
                       : 'bg-slate-950 text-slate-400 border-slate-800 hover:border-slate-700 hover:text-slate-200'
                   }`}
                 >
-                  {tf === 'Daily' ? 'Daily (Makro Tren)' : tf === 'H4' ? 'H4 (Struktur Swing)' : 'H1 (Intraday Scalp)'}
+                  {tf === 'M1' ? 'M1 (1-Mnt)' : tf === 'M5' ? 'M5 (5-Mnt)' : tf === 'Daily' ? 'Daily (D1)' : tf}
                 </button>
               ))}
             </div>
