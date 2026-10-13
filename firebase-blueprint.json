@@ -1,0 +1,166 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Basic authenticated user profile",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The Firebase Authentication UID"
+        },
+        "email": {
+          "type": "string",
+          "description": "User email address"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User display name"
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "User avatar image URL"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp in ISO format"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Last update timestamp in ISO format"
+        }
+      },
+      "required": ["userId", "email"]
+    },
+    "SavedAnalysis": {
+      "title": "SavedAnalysis",
+      "description": "Saved gold market prediction and analysis setup snapshot",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique record identifier"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Owner user UID"
+        },
+        "timeframe": {
+          "type": "string",
+          "description": "Analysis timeframe (H1, H4, Daily, 15m)"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title or summary label of the setup"
+        },
+        "goldPrice": {
+          "type": "number",
+          "description": "Reference gold price"
+        },
+        "bias": {
+          "type": "string",
+          "description": "Trade bias: Bullish, Bearish, or Neutral"
+        },
+        "entryZone": {
+          "type": "string",
+          "description": "Optimal entry zone"
+        },
+        "stopLoss": {
+          "type": "string",
+          "description": "Stop loss price level"
+        },
+        "takeProfit1": {
+          "type": "string",
+          "description": "First take profit target"
+        },
+        "takeProfit2": {
+          "type": "string",
+          "description": "Second take profit target"
+        },
+        "riskRewardRatio": {
+          "type": "string",
+          "description": "Mathematical risk-reward ratio"
+        },
+        "notes": {
+          "type": "string",
+          "description": "User personal trader notes or journal remarks"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Update timestamp"
+        }
+      },
+      "required": ["id", "userId", "timeframe", "bias"]
+    },
+    "TradeJournal": {
+      "title": "TradeJournal",
+      "description": "Execution trade journal record for XAU/USD",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Trade identifier"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Owner user UID"
+        },
+        "type": {
+          "type": "string",
+          "description": "Order type: BUY or SELL"
+        },
+        "entryPrice": {
+          "type": "number",
+          "description": "Executed entry price"
+        },
+        "stopLoss": {
+          "type": "number",
+          "description": "Set stop loss price"
+        },
+        "takeProfit": {
+          "type": "number",
+          "description": "Set take profit price"
+        },
+        "lotSize": {
+          "type": "number",
+          "description": "Traded lot size"
+        },
+        "pnl": {
+          "type": "number",
+          "description": "Profit or loss in USD"
+        },
+        "status": {
+          "type": "string",
+          "description": "Trade status: OPEN, TP_HIT, SL_HIT, CLOSED"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Trade entry creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Trade update timestamp"
+        }
+      },
+      "required": ["id", "userId", "type", "entryPrice", "lotSize", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Individual user account document"
+    },
+    "/users/{userId}/savedAnalyses/{analysisId}": {
+      "schema": "SavedAnalysis",
+      "description": "Subcollection of saved market setups per user"
+    },
+    "/users/{userId}/tradeJournal/{tradeId}": {
+      "schema": "TradeJournal",
+      "description": "Subcollection of trade execution records per user"
+    }
+  }
+}

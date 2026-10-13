@@ -1,0 +1,103 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net: default-deny all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Validation for UserProfile
+    function isValidUserProfile(data, uid) {
+      return data.userId == uid
+        && data.email is string && data.email.size() > 3 && data.email.size() <= 256
+        && (!('displayName' in data) || (data.displayName is string && data.displayName.size() <= 100))
+        && (!('photoURL' in data) || (data.photoURL is string && data.photoURL.size() <= 500))
+        && (!('createdAt' in data) || (data.createdAt is string && data.createdAt.size() <= 40))
+        && (!('updatedAt' in data) || (data.updatedAt is string && data.updatedAt.size() <= 40));
+    }
+
+    // Validation for SavedAnalysis
+    function isValidSavedAnalysis(data, uid) {
+      return data.userId == uid
+        && data.id is string && isValidId(data.id)
+        && data.timeframe is string && data.timeframe.size() <= 20
+        && data.bias is string && (data.bias == 'Bullish' || data.bias == 'Bearish' || data.bias == 'Neutral')
+        && (!('title' in data) || (data.title is string && data.title.size() <= 150))
+        && (!('goldPrice' in data) || data.goldPrice is number)
+        && (!('entryZone' in data) || (data.entryZone is string && data.entryZone.size() <= 100))
+        && (!('stopLoss' in data) || (data.stopLoss is string && data.stopLoss.size() <= 60))
+        && (!('takeProfit1' in data) || (data.takeProfit1 is string && data.takeProfit1.size() <= 60))
+        && (!('takeProfit2' in data) || (data.takeProfit2 is string && data.takeProfit2.size() <= 60))
+        && (!('riskRewardRatio' in data) || (data.riskRewardRatio is string && data.riskRewardRatio.size() <= 40))
+        && (!('notes' in data) || (data.notes is string && data.notes.size() <= 2000))
+        && (!('createdAt' in data) || (data.createdAt is string && data.createdAt.size() <= 40))
+        && (!('updatedAt' in data) || (data.updatedAt is string && data.updatedAt.size() <= 40));
+    }
+
+    // Validation for TradeJournal
+    function isValidTradeJournal(data, uid) {
+      return data.userId == uid
+        && data.id is string && isValidId(data.id)
+        && data.type is string && (data.type == 'BUY' || data.type == 'SELL')
+        && data.entryPrice is number
+        && data.lotSize is number && data.lotSize > 0 && data.lotSize <= 1000
+        && data.status is string && (data.status == 'OPEN' || data.status == 'TP_HIT' || data.status == 'SL_HIT' || data.status == 'CLOSED')
+        && (!('stopLoss' in data) || data.stopLoss is number)
+        && (!('takeProfit' in data) || data.takeProfit is number)
+        && (!('pnl' in data) || data.pnl is number)
+        && (!('createdAt' in data) || (data.createdAt is string && data.createdAt.size() <= 40))
+        && (!('updatedAt' in data) || (data.updatedAt is string && data.updatedAt.size() <= 40));
+    }
+
+    // User Profile Rules
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidUserProfile(incoming(), userId);
+      allow update: if isOwner(userId) && isValidUserProfile(incoming(), userId)
+        && incoming().userId == existing().userId;
+      allow delete: if false;
+
+      // Saved Analyses Subcollection
+      match /savedAnalyses/{analysisId} {
+        allow get, list: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidId(analysisId) && isValidSavedAnalysis(incoming(), userId);
+        allow update: if isOwner(userId) && isValidId(analysisId) && isValidSavedAnalysis(incoming(), userId)
+          && incoming().userId == existing().userId
+          && incoming().id == existing().id;
+        allow delete: if isOwner(userId) && isValidId(analysisId);
+      }
+
+      // Trade Journal Subcollection
+      match /tradeJournal/{tradeId} {
+        allow get, list: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidId(tradeId) && isValidTradeJournal(incoming(), userId);
+        allow update: if isOwner(userId) && isValidId(tradeId) && isValidTradeJournal(incoming(), userId)
+          && incoming().userId == existing().userId
+          && incoming().id == existing().id;
+        allow delete: if isOwner(userId) && isValidId(tradeId);
+      }
+    }
+  }
+}
